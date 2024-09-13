@@ -63,3 +63,4 @@ def performance_on_categorical_slice(
     # Compute and return the metrics
     precision, recall, fbeta = compute_model_metrics(y_slice, preds)
     return precision, recall, fbeta
+

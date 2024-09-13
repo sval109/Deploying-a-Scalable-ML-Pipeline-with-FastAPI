@@ -20,7 +20,7 @@ I evaluated the model using the following metrics:
 - **Recall**: 0.6384
 - **F1 Score**: 0.6863
 
-These metrics help understand the model's performance. Precision tells us how many of the positive predictions were correct, recall shows how well the model found all the actual positive cases, and the F1 Score gives a balance between precision and recall.
+These metrics help understand the model's performance. Precision tells us how many of the positive predictions were correct, recall shows how well the model found all the actual positive cases, and the F1 Score gives a balance between precision and recall. 
 
 ## Ethical Considerations
 There are some ethical concerns with using this model:
