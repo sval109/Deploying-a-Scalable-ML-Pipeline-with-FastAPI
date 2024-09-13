@@ -1,13 +1,15 @@
 import pytest
 import numpy as np
 import pandas as pd
+import os
 from sklearn.ensemble import RandomForestClassifier
 from ml.model import train_model, inference, compute_model_metrics
 from ml.data import process_data
 # TODO: add necessary import
 
-data_path = "C:/Users/stacy/PycharmProjects/pythonProject9.12/Deploying-a-Scalable-ML-Pipeline-with-FastAPI/data/census.csv"
 
+project_path = os.path.dirname(__file__)  # Gets the directory of the current test file
+data_path = os.path.join(project_path, "data", "census.csv")
 
 @pytest.fixture
 def sample_data():
