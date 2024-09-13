@@ -1,28 +1,60 @@
 import pytest
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from ml.model import train_model, inference, compute_model_metrics
+from ml.data import process_data
 # TODO: add necessary import
 
-# TODO: implement the first test. Change the function name and input as needed
-def test_one():
-    """
-    # add description for the first test
-    """
-    # Your code here
-    pass
+data_path = "C:/Users/stacy/PycharmProjects/pythonProject9.12/Deploying-a-Scalable-ML-Pipeline-with-FastAPI/data/census.csv"
 
 
-# TODO: implement the second test. Change the function name and input as needed
-def test_two():
-    """
-    # add description for the second test
-    """
-    # Your code here
-    pass
+@pytest.fixture
+def sample_data():
+    # Provide a small sample dataset loaded from the actual data file
+
+    # Load the first 20 rows from the file
+    data = pd.read_csv(data_path).head(20)
+
+    # Process the data to get X and y
+    cat_features = ["workclass", "education", "marital-status", "occupation",
+                    "relationship", "race", "sex", "native-country"]
+
+    X, y, encoder, lb = process_data(
+        data,
+        categorical_features=cat_features,
+        label="salary",
+        training=True
+    )
+
+    return X, y, encoder, lb
 
 
-# TODO: implement the third test. Change the function name and input as needed
-def test_three():
-    """
-    # add description for the third test
-    """
-    # Your code here
-    pass
+def test_return_model_correct_type(sample_data):
+    # Test if the train_model function returns a RandomForestClassifier.
+
+    X, y, _, _ = sample_data
+    model = train_model(X, y)
+    assert isinstance(model, RandomForestClassifier), "Expected RandomForestClassifier"
+
+
+def test_inference_output_shape(sample_data):
+    # Test if the inference function returns a numpy array of the correct shape.
+
+    X, y, _, _ = sample_data
+    model = train_model(X, y)
+    preds = inference(model, X)
+    assert isinstance(preds, np.ndarray), "Expected a numpy array"
+    assert preds.shape[0] == X.shape[0], "Expected predictions for each input sample"
+
+
+def test_compute_metrics_with_sample_data():
+    # Test if compute_model_metrics function returns expected values within valid ranges.
+
+    y_true = np.array([0, 1])
+    y_pred = np.array([0, 1])
+    precision, recall, fbeta = compute_model_metrics(y_true, y_pred)
+
+    assert 0 <= precision <= 1, "Precision out of expected range"
+    assert 0 <= recall <= 1, "Recall out of expected range"
+    assert 0 <= fbeta <= 1, "F1 Score out of expected range"
